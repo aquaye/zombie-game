@@ -67,6 +67,13 @@ class Map
     return @v_pos
   end
     
+  def return_v_width
+    return @v_width
+  end
+
+  def return_h_height
+    return @h_height
+  end
 end
 
 # controller
@@ -119,32 +126,48 @@ def menu
     
     case action
     when "move"
+      movement_options = []
+
+      h_pos = $map.return_h_pos
+      v_pos = $map.return_v_pos
+
+      puts "#{h_pos}, #{v_pos}"
+
       puts "Select a direction: "
       
-      h_pos = map.return_h_pos
-      v_pos = map.return_v_pos
-      
-      case move
-      when h_pos > 0
+      if h_pos > 1
         puts "Move WEST"
-      when h_pos < 5
+        movement_options.push("WEST")
+      end
+      if h_pos < $map.return_h_height
         puts "Move EAST"
-      when v_pos > 0
+        movement_options.push("EAST")
+      end
+      if v_pos > 1
         puts "Move SOUTH"
-      when v_pos < 5
+        movement_options.push("SOUTH")
+      end
+      if v_pos < $map.return_v_width
         puts "Move NORTH"
+        movement_options.push("NORTH")
       end
       
       move_dir = gets.chomp.to_s
+
+      can_move = false
+
+      # loop that checks movement_options and changes can_move to true if move_dir matches a value in movement_options
+
+
       
       if move_dir == "NORTH" 
-        map.move_north
-      elsif move_sir == "SOUTH" 
-        map.move_south
+        $map.move_north
+      elsif move_dir == "SOUTH" 
+        $map.move_south
       elsif move_dir == "EAST" 
-        map.move_east
+        $map.move_east
       elsif move_dir == "WEST"
-        map.move_west
+        $map.move_west
       end
     when "user menu"
       user.update_user
@@ -154,9 +177,9 @@ def menu
   end
 end
 
-player = create_user
+$player = create_user
 
-map = create_map
+$map = create_map
 
 menu.call
 
